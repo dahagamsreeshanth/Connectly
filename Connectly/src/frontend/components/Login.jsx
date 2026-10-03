@@ -1,7 +1,44 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
+
+      alert("Login successful!");
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="login-card">
@@ -10,8 +47,9 @@ export default function Login() {
           <h2>Welcome Back</h2>
           <p>Login to continue connecting with your friends.</p>
         </div>
-        
-        <form>
+
+        <form onSubmit={handleLogin}>
+
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address
@@ -21,7 +59,9 @@ export default function Login() {
               type="email"
               className="form-control"
               id="email"
+              name="email"
               placeholder="you@example.com"
+              required
             />
           </div>
 
@@ -40,7 +80,9 @@ export default function Login() {
               type="password"
               className="form-control"
               id="password"
+              name="password"
               placeholder="Enter your password"
+              required
             />
           </div>
 
@@ -59,6 +101,7 @@ export default function Login() {
           <button type="submit" className="login-btn">
             Login
           </button>
+
         </form>
 
         <div className="divider">

@@ -7,6 +7,7 @@ import Login from './frontend/components/Login'
 import NavBar from './frontend/NavBar'
 import Footer from './frontend/Footer'
 import About from './frontend/components/About'
+import Dashboard from './frontend/components/dashboard'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
          <Route path="/about" element={<About />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
       </Routes>
       </main>
