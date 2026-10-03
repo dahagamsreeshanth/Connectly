@@ -1,10 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import User from './models/user.js';
+import cors from "cors";
+import bcrypt from "bcrypt";
+
 const app = express();
 
-dotenv.config({ path: "../../.env" });
+app.use(express.json());
+app.use(cors());
 
+
+dotenv.config({ path: "../../.env" });
 
 const mongodb_url = process.env.MONGODB_URL;
 
@@ -15,13 +22,19 @@ async function main() {
 
 main().catch(err => console.log(err));
 
-app.get("/back", (req, res) => {
-    res.send("server is working");
+ app.post("/api/register", async (req, res) => {
+    const { name, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
+    try {
+        await user.save();
+    } catch (err) {
+        return res.status(400).json({ message: err.message });
+    }
+    console.log("user registered");
+    res.status(201).json({ message: "User registered successfully" });
 });
 
-app.get("/", (req, res) => {
-    res.send("server is working");
-});
 
 
 

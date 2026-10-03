@@ -10,7 +10,7 @@ export default function Login() {
           <h2>Welcome Back</h2>
           <p>Login to continue connecting with your friends.</p>
         </div>
-
+        
         <form>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
